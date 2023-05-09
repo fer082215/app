@@ -1,0 +1,20 @@
+name: login-pipeline
+on: [push] # El pipeline se ejecutará cuando se haga un push a la rama principal del repositorio
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # Ubuntu es el sistema operativo
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2 # Descarga el código fuente del repositorio
+    - name: Install dependencies
+      run: npm install # Instala las dependencias necesarias para la aplicación
+    - name: Set up environment variables
+      env:
+        DB_HOST: ${{ secrets.DB_HOST }} # Definir las variables de entorno necesarias, en este caso, el host de la base de datos
+        DB_USERNAME: ${{ secrets.DB_USERNAME }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        DB_DATABASE: ${{ secrets.DB_DATABASE }}
+      run: echo "DB_HOST=$DB_HOST" >> $GITHUB_ENV && echo "DB_USERNAME=$DB_USERNAME" >> $GITHUB_ENV && echo "DB_PASSWORD=$DB_PASSWORD" >> $GITHUB_ENV && echo "DB_DATABASE=$DB_DATABASE" >> $GITHUB_ENV # Configurar las variables de entorno para que se puedan utilizar en los siguientes pasos
+    - name: Run tests
+      run: npm test # Ejecutar las pruebas necesarias para el Log in
