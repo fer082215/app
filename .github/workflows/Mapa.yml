@@ -1,0 +1,18 @@
+name: mapa-pipeline
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code # Clona el repositorio de GitHub y de ubicar el código en la máquina virtual
+        uses: actions/checkout@v2
+      - name: Install dependencies # Instala todas las dependencias necesarias para el proyecto
+        run: npm install
+      - name: Build # Compila y construye el proyecto
+        run: npm run build
+      - name: Deploy
+        run: npm run deploy # Despliega el proyecto en el servidor
